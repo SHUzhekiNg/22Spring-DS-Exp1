@@ -12,53 +12,55 @@ void print(int n) {
     return;
 }
 
-// ÎŞÏòÍ¼µÄÁÚ½Ó¾ØÕóÀà
+// æ— å‘å›¾çš„é‚»æ¥çŸ©é˜µç±»
 template<class ElemType>
 class AdjMatrixUndirGraph {
 protected:
-// ÁÚ½Ó¾ØÕóµÄÊı¾İ³ÉÔ±:
-    int vexNum, vexMaxNum, arcNum;            // ¶¥µãÊıÄ¿¡¢ÔÊĞíµÄ¶¥µã×î´óÊıÄ¿ºÍ±ßÊı
-    int **arcs;                                // ´æ·Å±ßĞÅÏ¢ÁÚ½Ó¾ØÕó
-    ElemType *vertexes;                        // ´æ·Å¶¥µãĞÅÏ¢µÄÊı×é
-    mutable Status *tag;                    // ±êÖ¾Êı×é
+// é‚»æ¥çŸ©é˜µçš„æ•°æ®æˆå‘˜:
+    int vexNum, vexMaxNum, arcNum;            // é¡¶ç‚¹æ•°ç›®ã€å…è®¸çš„é¡¶ç‚¹æœ€å¤§æ•°ç›®å’Œè¾¹æ•°
+    int **arcs;                                // å­˜æ”¾è¾¹ä¿¡æ¯é‚»æ¥çŸ©é˜µ
+    ElemType *vertexes;                        // å­˜æ”¾é¡¶ç‚¹ä¿¡æ¯çš„æ•°ç»„
+    mutable Status *tag;                    // æ ‡å¿—æ•°ç»„
 
 public:
-// ÁÚ½Ó¾ØÕóÀàĞÍµÄ·½·¨ÉùÃ÷:
+// é‚»æ¥çŸ©é˜µç±»å‹çš„æ–¹æ³•å£°æ˜:
     AdjMatrixUndirGraph(ElemType es[], int vertexNum, int vertexMaxNum = DEFAULT_SIZE);
 
-    // ÒÔÊı×ées[]Îª¶¥µã,¶¥µã¸öÊıÎªvertexNum,ÔÊĞíµÄ¶¥µã×î´óÊıÄ¿ÎªvertexMaxNum,±ßÊıÎª0µÄÎŞÏòÍ¼
+    // ä»¥æ•°ç»„es[]ä¸ºé¡¶ç‚¹,é¡¶ç‚¹ä¸ªæ•°ä¸ºvertexNum,å…è®¸çš„é¡¶ç‚¹æœ€å¤§æ•°ç›®ä¸ºvertexMaxNum,è¾¹æ•°ä¸º0çš„æ— å‘å›¾
     AdjMatrixUndirGraph(int vertexMaxNum = DEFAULT_SIZE);
 
-    // ¹¹ÔìÔÊĞíµÄ¶¥µã×î´óÊıÄ¿ÎªvertexMaxNum,±ßÊıÎª0µÄÎŞÏòÍ¼
-    ~AdjMatrixUndirGraph();                    // Îö¹¹º¯Êı
-    void Clear();                          // Çå¿ÕÍ¼
-    bool IsEmpty();                 // ÅĞ¶ÏÎŞÏòÍ¼ÊÇ·ñÎª¿Õ
-    int GetOrder(ElemType &d) const;// Çó¶¥µãµÄĞòºÅ
-    Status GetElem(int v, ElemType &d) const;// Çó¶¥µãµÄÔªËØÖµ
-    Status SetElem(int v, const ElemType &d);// ÉèÖÃ¶¥µãµÄÔªËØÖµ
-    int GetVexNum() const;                    // ·µ»Ø¶¥µã¸öÊı
-    int GetArcNum() const;                    // ·µ»Ø±ßÊı
-    int FirstAdjVex(int v) const;        // ·µ»Ø¶¥µãvµÄµÚÒ»¸öÁÚ½Óµã
-    int NextAdjVex(int v1, int v2) const;         // ·µ»Ø¶¥µãv1µÄÏà¶ÔÓÚv2µÄÏÂÒ»¸öÁÚ½Óµã
-    void InsertVex(const ElemType &d);             // ²åÈëÔªËØÖµÎªdµÄ¶¥µã
-    void InsertArc(int v1, int v2, int W);                 // ²åÈë¶¥µãÎªv1ºÍv2µÄ±ß
-    void DeleteVex(const ElemType &d);             // É¾³ıÔªËØÖµÎªdµÄ¶¥µã
-    void DeleteArc(int v1, int v2);                 // É¾³ı¶¥µãÎªv1ºÍv2µÄ±ß
-    Status GetTag(int v) const;                     // ·µ»Ø¶¥µãvµÄ±êÖ¾
-    void SetTag(int v, Status val) const;       // ÉèÖÃ¶¥µãvµÄ±êÖ¾Îªval
-    AdjMatrixUndirGraph(const AdjMatrixUndirGraph<ElemType> &g);    // ¸´ÖÆ¹¹Ôìº¯Êı
+    // æ„é€ å…è®¸çš„é¡¶ç‚¹æœ€å¤§æ•°ç›®ä¸ºvertexMaxNum,è¾¹æ•°ä¸º0çš„æ— å‘å›¾
+    ~AdjMatrixUndirGraph();                    // ææ„å‡½æ•°
+    void Clear();                          // æ¸…ç©ºå›¾
+    bool IsEmpty();                 // åˆ¤æ–­æ— å‘å›¾æ˜¯å¦ä¸ºç©º
+    int GetOrder(ElemType &d) const;// æ±‚é¡¶ç‚¹çš„åºå·
+    Status GetElem(int v, ElemType &d) const;// æ±‚é¡¶ç‚¹çš„å…ƒç´ å€¼
+    Status SetElem(int v, const ElemType &d);// è®¾ç½®é¡¶ç‚¹çš„å…ƒç´ å€¼
+    int GetVexNum() const;                    // è¿”å›é¡¶ç‚¹ä¸ªæ•°
+    int GetArcNum() const;                    // è¿”å›è¾¹æ•°
+    int FirstAdjVex(int v) const;        // è¿”å›é¡¶ç‚¹vçš„ç¬¬ä¸€ä¸ªé‚»æ¥ç‚¹
+    int NextAdjVex(int v1, int v2) const;         // è¿”å›é¡¶ç‚¹v1çš„ç›¸å¯¹äºv2çš„ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹
+    void InsertVex(const ElemType &d);             // æ’å…¥å…ƒç´ å€¼ä¸ºdçš„é¡¶ç‚¹
+    void InsertArc(int v1, int v2, int W);                 // æ’å…¥é¡¶ç‚¹ä¸ºv1å’Œv2çš„è¾¹
+    void DeleteVex(const ElemType &d);             // åˆ é™¤å…ƒç´ å€¼ä¸ºdçš„é¡¶ç‚¹
+    void DeleteArc(int v1, int v2);                 // åˆ é™¤é¡¶ç‚¹ä¸ºv1å’Œv2çš„è¾¹
+    Status GetTag(int v) const;                     // è¿”å›é¡¶ç‚¹vçš„æ ‡å¿—
+    void SetTag(int v, Status val) const;       // è®¾ç½®é¡¶ç‚¹vçš„æ ‡å¿—ä¸ºval
+    AdjMatrixUndirGraph(const AdjMatrixUndirGraph<ElemType> &g);    // å¤åˆ¶æ„é€ å‡½æ•°
     AdjMatrixUndirGraph<ElemType> &operator=(const AdjMatrixUndirGraph<ElemType> &g);
 
-    // ¸³ÖµÓï¾äÖØÔØ
-    void Display();                             // ÏÔÊ¾ÁÚ½Ó¾ØÕóÎŞÏòÍ¼
+    // èµ‹å€¼è¯­å¥é‡è½½
+    void Display();                             // æ˜¾ç¤ºé‚»æ¥çŸ©é˜µæ— å‘å›¾
     int CountOutDegree(ElemType &e);
 
     int CountInDegree(ElemType &e);
 
     int ShortestPath_Floued(ElemType &e1, ElemType &e2);
+
+    int ShortestPath_DJ(ElemType &e1, ElemType &e2);
 };
 
-// ÎŞÏòÍ¼µÄÁÚ½Ó¾ØÕóÀàµÄÊµÏÖ²¿·Ö
+// æ— å‘å›¾çš„é‚»æ¥çŸ©é˜µç±»çš„å®ç°éƒ¨åˆ†
 template<class ElemType>
 int AdjMatrixUndirGraph<ElemType>::CountOutDegree(ElemType &e) {
     int v1 = 0;
@@ -66,7 +68,7 @@ int AdjMatrixUndirGraph<ElemType>::CountOutDegree(ElemType &e) {
         if (vertexes[v1] == e) break;
     }
     if (v1 == vexNum) {
-        throw Error("²éÑ¯½Úµã²»´æÔÚ!");
+        throw Error("æŸ¥è¯¢èŠ‚ç‚¹ä¸å­˜åœ¨!");
     }
     int s = 0;
     for (int i = 0; i < vexNum; ++i) {
@@ -82,7 +84,7 @@ int AdjMatrixUndirGraph<ElemType>::CountInDegree(ElemType &e) {
         if (vertexes[v1] == e) break;
     }
     if (v1 == vexNum) {
-        throw Error("²éÑ¯½Úµã²»´æÔÚ!");
+        throw Error("æŸ¥è¯¢èŠ‚ç‚¹ä¸å­˜åœ¨!");
     }
     int s = 0;
     for (int i = 0; i < vexNum; ++i) {
@@ -99,10 +101,27 @@ int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floued(ElemType &e1, ElemType &e
         if (vertexes[i] == e2) v2 = i;
     }
     if (v1 == vexNum || v2 == vexNum) {
-        throw Error("ÊäÈëµÄ¶¥µã²»È«´æÔÚ£¡");
+        throw Error("è¾“å…¥çš„é¡¶ç‚¹ä¸å…¨å­˜åœ¨ï¼");
     } else if (v1 == v2) {
         return 0;
     }
+    int sp[vexNum][vexNum];
+    for (int i = 0; i < vexNum; ++i) {
+        for (int j = 0; j < vexNum; ++j) {
+            sp[i][j] = (arcs[i][j] == -1 ? DEFAULT_INFINITY : arcs[i][j]);
+        }
+    }
+    for (int mid = 0; mid < vexNum; ++mid) {
+        for (int start = 0; start < vexNum; ++start) {
+            for (int end = 0; end < vexNum; end++) {
+                if (sp[start][end] > sp[start][mid] + sp[mid][end]) {
+                    sp[start][end] = sp[start][mid] + sp[mid][end];
+                }
+            }
+        }
+    }
+    return sp[v1][v2];
+    /*
     int pathlen = arcs[v1][v2] == -1 ? DEFAULT_INFINITY : arcs[v1][v2];
     for (int mid = 0; mid < vexNum; mid++) {
         if (mid == v1 || mid == v2) {
@@ -114,27 +133,108 @@ int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floued(ElemType &e1, ElemType &e
             pathlen = pathlen < (front + rear) ? pathlen : (front + rear);
         }
     }
-    return pathlen;
+    return pathlen;*/
+}
+
+template<class ElemType>
+int AdjMatrixUndirGraph<ElemType>::ShortestPath_DJ(ElemType &e1, ElemType &e2) {
+    int v1 = -1, v2 = -1;
+    for (int i = 0; i < vexNum; ++i) {
+        if (vertexes[i] == e1) v1 = i;
+        if (vertexes[i] == e2) v2 = i;
+    }
+    if (v1 == vexNum || v2 == vexNum) {
+        throw Error("è¾“å…¥çš„é¡¶ç‚¹ä¸å…¨å­˜åœ¨ï¼");
+    } else if (v1 == v2) {
+        return 0;
+    }//
+    int dis[vexNum];
+    int visited[vexNum];
+    int to_visit;
+    for (int i = 0; i < vexNum; ++i) {
+        if (i == v1) dis[i] = 0;
+        else dis[i] = DEFAULT_INFINITY;
+        visited[i] = 0;
+    }
+    for (int visited_num = 0; visited_num < vexNum; visited_num++) {
+        int mindis = DEFAULT_INFINITY;
+        for (int i = 0; i < vexNum; ++i) {
+            if (visited[i] == 0) {
+                to_visit = mindis < dis[i] ? to_visit : i;
+                mindis = mindis < dis[i] ? mindis : dis[i];
+            }
+        }
+        for (int i = 0; i < vexNum; ++i) {
+            if (arcs[to_visit][i] != -1 && visited[i] == 0) {
+                dis[i] = (dis[to_visit] + arcs[to_visit][i]) < dis[i] ? (dis[to_visit] + arcs[to_visit][i]) : dis[i];
+            }
+        }
+        visited[to_visit] = 1;
+    }
+    return dis[v2];
+    /*
+    int dis[vexNum];
+    int white_point[vexNum];
+    int new_white_point_i, white_point_num = 1;
+    for (int i = 0; i < vexNum; ++i) {
+        if (i == v1) {
+            dis[i] = 0;
+            white_point[i] = 1;
+            new_white_point_i = i;
+        } else {
+            dis[i] = DEFAULT_INFINITY;
+            white_point[i] = 0;
+        }
+    }
+    while (true) {
+        for (int i = 0; i < vexNum; ++i) {
+            if (arcs[new_white_point_i][i] == -1) {
+                continue;
+            } else if (white_point[i] == 0) {
+                int d = dis[new_white_point_i] + arcs[new_white_point_i][i];
+                dis[i] = dis[i] < d ? dis[i] : d;
+            }
+        }
+        int min_white_point_data = DEFAULT_INFINITY;
+        for (int i = 0; i < vexNum; ++i) {
+            if (white_point[i] == 1) {
+                continue;
+            } else {
+                new_white_point_i = dis[i] < min_white_point_data ? i : new_white_point_i;
+                min_white_point_data = dis[i] < min_white_point_data ? dis[i] : min_white_point_data;
+            }
+        }
+        white_point[new_white_point_i] = 1;
+        white_point_num++;
+        if (white_point_num == vexNum - 1) {
+            break;
+        }
+    }
+    /*for (int i = 0; i < vexNum; ++i) {
+        cout << dis[i] << " ";
+    }
+    cout << endl;
+    return dis[v2];*/
 }
 
 template<class ElemType>
 AdjMatrixUndirGraph<ElemType>::AdjMatrixUndirGraph(ElemType es[], int vertexNum, int vertexMaxNum)
-// ²Ù×÷½á¹û£º¹¹ÔìÊı¾İÔªËØÎªes[],¶¥µã¸öÊıÎªvertexNum,ÔÊĞíµÄ¶¥µã×î´óÊıÄ¿ÎªvertexMaxNum,±ßÊıÎª0µÄÎŞÏòÍ¼
+// æ“ä½œç»“æœï¼šæ„é€ æ•°æ®å…ƒç´ ä¸ºes[],é¡¶ç‚¹ä¸ªæ•°ä¸ºvertexNum,å…è®¸çš„é¡¶ç‚¹æœ€å¤§æ•°ç›®ä¸ºvertexMaxNum,è¾¹æ•°ä¸º0çš„æ— å‘å›¾
 
 {
     if (vertexMaxNum < 0)
-        throw Error("ÔÊĞíµÄ¶¥µã×î´óÊıÄ¿²»ÄÜÎª¸º!");        // Å×³öÒì³£
+        throw Error("å…è®¸çš„é¡¶ç‚¹æœ€å¤§æ•°ç›®ä¸èƒ½ä¸ºè´Ÿ!");        // æŠ›å‡ºå¼‚å¸¸
 
     if (vertexMaxNum < vertexNum)
-        throw Error("¶¥µãÊıÄ¿²»ÄÜ´óÓÚÔÊĞíµÄ¶¥µã×î´óÊıÄ¿!");// Å×³öÒì³£
+        throw Error("é¡¶ç‚¹æ•°ç›®ä¸èƒ½å¤§äºå…è®¸çš„é¡¶ç‚¹æœ€å¤§æ•°ç›®!");// æŠ›å‡ºå¼‚å¸¸
 
     vexNum = vertexNum;
     vexMaxNum = vertexMaxNum;
     arcNum = 0;
 
-    vertexes = new ElemType[vexMaxNum];      // Éú³ÉÉú³É¶¥µãĞÅÏ¢Êı×é
-    tag = new Status[vexMaxNum];                   // Éú³É±êÖ¾Êı×é
-    arcs = (int **) new int *[vexMaxNum];     // Éú³ÉÁÚ½Ó¾ØÕó
+    vertexes = new ElemType[vexMaxNum];      // ç”Ÿæˆç”Ÿæˆé¡¶ç‚¹ä¿¡æ¯æ•°ç»„
+    tag = new Status[vexMaxNum];                   // ç”Ÿæˆæ ‡å¿—æ•°ç»„
+    arcs = (int **) new int *[vexMaxNum];     // ç”Ÿæˆé‚»æ¥çŸ©é˜µ
     for (int v = 0; v < vexMaxNum; v++)
         arcs[v] = new int[vexMaxNum]();
 
@@ -148,18 +248,18 @@ AdjMatrixUndirGraph<ElemType>::AdjMatrixUndirGraph(ElemType es[], int vertexNum,
 
 template<class ElemType>
 AdjMatrixUndirGraph<ElemType>::AdjMatrixUndirGraph(int vertexMaxNum)
-// ²Ù×÷½á¹û£º¹¹ÔìÔÊĞí¶¥µãµÄ×î´óÊıÄ¿ÎªvertexMaxNumµÄ¿ÕÎŞÏòÍ¼
+// æ“ä½œç»“æœï¼šæ„é€ å…è®¸é¡¶ç‚¹çš„æœ€å¤§æ•°ç›®ä¸ºvertexMaxNumçš„ç©ºæ— å‘å›¾
 {
     if (vertexMaxNum < 0)
-        throw Error("ÔÊĞíµÄ¶¥µã×î´óÊıÄ¿²»ÄÜÎª¸º!");// Å×³öÒì³£
+        throw Error("å…è®¸çš„é¡¶ç‚¹æœ€å¤§æ•°ç›®ä¸èƒ½ä¸ºè´Ÿ!");// æŠ›å‡ºå¼‚å¸¸
 
     vexNum = 0;
     vexMaxNum = vertexMaxNum;
     arcNum = 0;
 
-    vertexes = new ElemType[vexMaxNum];     // Éú³ÉÉú³É¶¥µãĞÅÏ¢Êı×é
-    tag = new Status[vexMaxNum];                  // Éú³É±êÖ¾Êı×é
-    arcs = (int **) new int *[vexMaxNum];    // Éú³ÉÁÚ½Ó¾ØÕó
+    vertexes = new ElemType[vexMaxNum];     // ç”Ÿæˆç”Ÿæˆé¡¶ç‚¹ä¿¡æ¯æ•°ç»„
+    tag = new Status[vexMaxNum];                  // ç”Ÿæˆæ ‡å¿—æ•°ç»„
+    arcs = (int **) new int *[vexMaxNum];    // ç”Ÿæˆé‚»æ¥çŸ©é˜µ
     for (int v = 0; v < vexMaxNum; v++) {
         arcs[v] = new int[vexMaxNum]();
         for (int i = 0; i < vexNum; ++i) {
@@ -171,7 +271,7 @@ AdjMatrixUndirGraph<ElemType>::AdjMatrixUndirGraph(int vertexMaxNum)
 
 template<class ElemType>
 void AdjMatrixUndirGraph<ElemType>::Clear()
-// ²Ù×÷½á¹û£º°ÑÎŞÏòÍ¼µÄ¶¥µãÊıºÍ±ßÊıÉèÖÃÎª0.			 
+// æ“ä½œç»“æœï¼šæŠŠæ— å‘å›¾çš„é¡¶ç‚¹æ•°å’Œè¾¹æ•°è®¾ç½®ä¸º0.
 {
     vexNum = 0;
     arcNum = 0;
@@ -179,114 +279,114 @@ void AdjMatrixUndirGraph<ElemType>::Clear()
 
 template<class ElemType>
 bool AdjMatrixUndirGraph<ElemType>::IsEmpty()
-// ²Ù×÷½á¹û£ºÈç¹ûÎŞÏòÍ¼Îª¿Õ·µ»Øtrue,·ñÔò·µ»Øfalse.
+// æ“ä½œç»“æœï¼šå¦‚æœæ— å‘å›¾ä¸ºç©ºè¿”å›true,å¦åˆ™è¿”å›false.
 {
     return vexNum == 0;
 }
 
 template<class ElemType>
 AdjMatrixUndirGraph<ElemType>::~AdjMatrixUndirGraph()
-// ²Ù×÷½á¹û£ºÊÍ·Å¶ÔÏóËùÕ¼ÓÃµÄ¿Õ¼ä
+// æ“ä½œç»“æœï¼šé‡Šæ”¾å¯¹è±¡æ‰€å ç”¨çš„ç©ºé—´
 {
-    delete[]vertexes;                    // ÊÍ·Å¶¥µãÊı¾İ
-    delete[]tag;                            // ÊÍ·Å±êÖ¾
+    delete[]vertexes;                    // é‡Šæ”¾é¡¶ç‚¹æ•°æ®
+    delete[]tag;                            // é‡Šæ”¾æ ‡å¿—
 
-    for (int v = 0; v < vexMaxNum; v++)    // ÊÍ·ÅÁÚ½Ó¾ØÕóµÄĞĞ
+    for (int v = 0; v < vexMaxNum; v++)    // é‡Šæ”¾é‚»æ¥çŸ©é˜µçš„è¡Œ
         delete[]arcs[v];
-    delete[]arcs;                        // ÊÍ·ÅÁÚ½Ó¾ØÕó
+    delete[]arcs;                        // é‡Šæ”¾é‚»æ¥çŸ©é˜µ
 }
 
 template<class ElemType>
 int AdjMatrixUndirGraph<ElemType>::GetOrder(ElemType &d) const
-// ²Ù×÷½á¹û£ºÇó¶¥µãdµÄĞòºÅ.¶¥µãµÄĞòºÅ´Ó0¿ªÊ¼£¬Í¼ÖĞ²»´æÔÚ¶¥µãdÊ±£¬·µ»Ø-1. 
+// æ“ä½œç»“æœï¼šæ±‚é¡¶ç‚¹dçš„åºå·.é¡¶ç‚¹çš„åºå·ä»0å¼€å§‹ï¼Œå›¾ä¸­ä¸å­˜åœ¨é¡¶ç‚¹dæ—¶ï¼Œè¿”å›-1.
 {
     for (int v = 0; v < vexNum; v++)
         if (vertexes[v] == d)
-            return v;        // ¶¥µãd´æÔÚ,·µ»ØËüµÄĞòºÅ
-    return -1;            // ¶¥µãd²»´æÔÚ,·µ»Ø-1
+            return v;        // é¡¶ç‚¹då­˜åœ¨,è¿”å›å®ƒçš„åºå·
+    return -1;            // é¡¶ç‚¹dä¸å­˜åœ¨,è¿”å›-1
 }
 
 template<class ElemType>
 Status AdjMatrixUndirGraph<ElemType>::GetElem(int v, ElemType &d) const
-// ²Ù×÷½á¹û£ºÇóĞòºÅÎªvµÄ¶¥µãÖµ, vµÄÈ¡Öµ·¶Î§Îª0 ¡Ü v £¼ vexNum, vºÏ·¨Ê±º¯Êı
-// Í¨¹ıdÈ¡µÃ¶¥µãÖµ£¬²¢·µ»ØENTRY_FOUND£»·ñÔòº¯Êı·µ»ØNOT_PRESENT
+// æ“ä½œç»“æœï¼šæ±‚åºå·ä¸ºvçš„é¡¶ç‚¹å€¼, vçš„å–å€¼èŒƒå›´ä¸º0 â‰¤ v ï¼œ vexNum, våˆæ³•æ—¶å‡½æ•°
+// é€šè¿‡då–å¾—é¡¶ç‚¹å€¼ï¼Œå¹¶è¿”å›ENTRY_FOUNDï¼›å¦åˆ™å‡½æ•°è¿”å›NOT_PRESENT
 {
     if (v < 0 || v >= vexNum)
-        return NOT_PRESENT;    // v·¶Î§´í,·µ»ØÔªËØ²»´æÔÚ
+        return NOT_PRESENT;    // vèŒƒå›´é”™,è¿”å›å…ƒç´ ä¸å­˜åœ¨
     else {
-        d = vertexes[v];      // ½«¶¥µãvµÄÔªËØÖµ¸³¸ød
-        return ENTRY_FOUND;    // ·µ»ØÔªËØ´æÔÚ
+        d = vertexes[v];      // å°†é¡¶ç‚¹vçš„å…ƒç´ å€¼èµ‹ç»™d
+        return ENTRY_FOUND;    // è¿”å›å…ƒç´ å­˜åœ¨
     }
 }
 
 template<class ElemType>
 Status AdjMatrixUndirGraph<ElemType>::SetElem(int v, const ElemType &d)
-// ²Ù×÷½á¹û£ºÉèÖÃ¶¥µãµÄÔªËØÖµvµÄÈ¡Öµ·¶Î§Îª0 ¡Ü v £¼ vexNum, vºÏ·¨Ê±º¯Êı·µ»Ø
-//	SUCCESS, ·ñÔòº¯Êı·µ»ØRANGE_ERROR
+// æ“ä½œç»“æœï¼šè®¾ç½®é¡¶ç‚¹çš„å…ƒç´ å€¼vçš„å–å€¼èŒƒå›´ä¸º0 â‰¤ v ï¼œ vexNum, våˆæ³•æ—¶å‡½æ•°è¿”å›
+//	SUCCESS, å¦åˆ™å‡½æ•°è¿”å›RANGE_ERROR
 {
     if (v < 0 || v >= vexNum)
-        return RANGE_ERROR;    // v·¶Î§´í,·µ»ØÎ»ÖÃ´í
+        return RANGE_ERROR;    // vèŒƒå›´é”™,è¿”å›ä½ç½®é”™
     else {
-        vertexes[v] = d;        // ½«¶¥µãÔªËØµÄÖµ¸ÄÎªd
-        return SUCCESS;          // ·µ»ØĞŞ¸Ä³É¹¦
+        vertexes[v] = d;        // å°†é¡¶ç‚¹å…ƒç´ çš„å€¼æ”¹ä¸ºd
+        return SUCCESS;          // è¿”å›ä¿®æ”¹æˆåŠŸ
     }
 }
 
 template<class ElemType>
 int AdjMatrixUndirGraph<ElemType>::GetVexNum() const
-// ²Ù×÷½á¹û£º·µ»Ø¶¥µã¸öÊı			 
+// æ“ä½œç»“æœï¼šè¿”å›é¡¶ç‚¹ä¸ªæ•°
 {
     return vexNum;
 }
 
 template<class ElemType>
 int AdjMatrixUndirGraph<ElemType>::GetArcNum() const
-// ²Ù×÷½á¹û£º·µ»Ø±ßÊı
+// æ“ä½œç»“æœï¼šè¿”å›è¾¹æ•°
 {
     return arcNum;
 }
 
 template<class ElemType>
 int AdjMatrixUndirGraph<ElemType>::FirstAdjVex(int v) const
-// ²Ù×÷½á¹û£º·µ»Ø¶¥µãvµÄµÚ1¸öÁÚ½ÓµãµÄĞòºÅ		 
+// æ“ä½œç»“æœï¼šè¿”å›é¡¶ç‚¹vçš„ç¬¬1ä¸ªé‚»æ¥ç‚¹çš„åºå·
 {
     if (v < 0 || v >= vexNum)
-        throw Error("v²»ºÏ·¨!");// Å×³öÒì³£
+        throw Error("vä¸åˆæ³•!");// æŠ›å‡ºå¼‚å¸¸
 
     for (int u = 0; u < vexNum; u++)
         if (arcs[v][u] != 0 || arcs[u][v] != 0)
             return u;
 
-    return -1;                    // ·µ»Ø-1±íÊ¾ÎŞÁÚ½Óµã
+    return -1;                    // è¿”å›-1è¡¨ç¤ºæ— é‚»æ¥ç‚¹
 }
 
 template<class ElemType>
 int AdjMatrixUndirGraph<ElemType>::NextAdjVex(int v1, int v2) const
-// ²Ù×÷½á¹û£º·µ»Ø¶¥µãv1µÄÏà¶ÔÓÚv2µÄÏÂÒ»¸öÁÚ½Óµã			 
+// æ“ä½œç»“æœï¼šè¿”å›é¡¶ç‚¹v1çš„ç›¸å¯¹äºv2çš„ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹
 {
     if (v1 < 0 || v1 >= vexNum)
-        throw Error("v1²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("v1ä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
     if (v2 < 0 || v2 >= vexNum)
-        throw Error("v2²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("v2ä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
     if (v1 == v2)
-        throw Error("v1²»ÄÜµÈÓÚv2!");        // Å×³öÒì³£
+        throw Error("v1ä¸èƒ½ç­‰äºv2!");        // æŠ›å‡ºå¼‚å¸¸
 
     for (int u = v2 + 1; u < vexNum; u++)
         if (arcs[v1][u] != 0 || arcs[u][v1] != 0)
             return u;
 
-    return -1;                        // ·µ»Ø-1±íÊ¾ÎŞÏÂÒ»¸öÁÚ½Óµã
+    return -1;                        // è¿”å›-1è¡¨ç¤ºæ— ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹
 }
 
 template<class ElemType>
 void AdjMatrixUndirGraph<ElemType>::InsertVex(const ElemType &d)
-// ²Ù×÷½á¹û£º²åÈë¶¥µãd			 
+// æ“ä½œç»“æœï¼šæ’å…¥é¡¶ç‚¹d
 {
     if (vexNum == vexMaxNum)
-        throw Error("Í¼µÄ¶¥µãÊı²»ÄÜ³¬¹ıÔÊĞíµÄ×î´óÊı!");    // Å×³öÒì³£
+        throw Error("å›¾çš„é¡¶ç‚¹æ•°ä¸èƒ½è¶…è¿‡å…è®¸çš„æœ€å¤§æ•°!");    // æŠ›å‡ºå¼‚å¸¸
     for (int i = 0; i < vexNum; ++i) {
         if (d == vertexes[i]) {
-            throw Error("´æÔÚÏàÍ¬½Úµã!");
+            throw Error("å­˜åœ¨ç›¸åŒèŠ‚ç‚¹!");
         }
     }
     vertexes[vexNum] = d;
@@ -300,16 +400,16 @@ void AdjMatrixUndirGraph<ElemType>::InsertVex(const ElemType &d)
 
 template<class ElemType>
 void AdjMatrixUndirGraph<ElemType>::InsertArc(int v1, int v2, int W)
-// ²Ù×÷½á¹û£º²åÈëÒÀ¸½¶¥µãv1ºÍv2µÄ±ß			 
+// æ“ä½œç»“æœï¼šæ’å…¥ä¾é™„é¡¶ç‚¹v1å’Œv2çš„è¾¹
 {
     if (v1 < 0 || v1 >= vexNum)
-        throw Error("v1²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("v1ä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
     if (v2 < 0 || v2 >= vexNum)
-        throw Error("v2²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("v2ä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
     if (v1 == v2)
-        throw Error("v1²»ÄÜµÈÓÚv2!");// Å×³öÒì³£
+        throw Error("v1ä¸èƒ½ç­‰äºv2!");// æŠ›å‡ºå¼‚å¸¸
 
-    if (arcs[v1][v2] == -1) {      // Ô­ÎŞÏòÍ¼ÖĞÃ»ÓĞ±ß(v1, v2)
+    if (arcs[v1][v2] == -1) {      // åŸæ— å‘å›¾ä¸­æ²¡æœ‰è¾¹(v1, v2)
         arcNum++;
         arcs[v1][v2] = W;
         //arcs[v2][v1] = 1;
@@ -318,16 +418,16 @@ void AdjMatrixUndirGraph<ElemType>::InsertArc(int v1, int v2, int W)
 
 template<class ElemType>
 void AdjMatrixUndirGraph<ElemType>::DeleteVex(const ElemType &d)
-// ²Ù×÷½á¹û£ºÉ¾³ıÔªËØÎªdµÄ¶¥µã			 
+// æ“ä½œç»“æœï¼šåˆ é™¤å…ƒç´ ä¸ºdçš„é¡¶ç‚¹
 {
     int v;
     for (v = 0; v < vexNum; v++)
         if (vertexes[v] == d)
             break;
     if (v == vexNum)
-        throw Error("Í¼ÖĞ²»´æÔÚÒªÉ¾³ıµÄ¶¥µã!");    // Å×³öÒì³£
+        throw Error("å›¾ä¸­ä¸å­˜åœ¨è¦åˆ é™¤çš„é¡¶ç‚¹!");    // æŠ›å‡ºå¼‚å¸¸
 
-    for (int u = 0; u < vexNum; u++)             // É¾³ıÓë¶¥µãdÏà¹ØÁªµÄ±ß
+    for (int u = 0; u < vexNum; u++)             // åˆ é™¤ä¸é¡¶ç‚¹dç›¸å…³è”çš„è¾¹
         if (arcs[v][u] == 1) {
             arcNum--;
             arcs[v][u] = -1;
@@ -347,18 +447,18 @@ void AdjMatrixUndirGraph<ElemType>::DeleteVex(const ElemType &d)
 
 template<class ElemType>
 void AdjMatrixUndirGraph<ElemType>::DeleteArc(int v1, int v2)
-// ²Ù×÷½á¹û£ºÉ¾³ıÒÀ¸½¶¥µãv1ºÍv2µÄ±ß			 
+// æ“ä½œç»“æœï¼šåˆ é™¤ä¾é™„é¡¶ç‚¹v1å’Œv2çš„è¾¹
 {
     if (v1 < 0 || v1 >= vexNum)
-        throw Error("v1²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("v1ä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
     if (v2 < 0 || v2 >= vexNum)
-        throw Error("v2²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("v2ä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
     if (v1 == v2)
-        throw Error("v1²»ÄÜµÈÓÚv2!");// Å×³öÒì³£
+        throw Error("v1ä¸èƒ½ç­‰äºv2!");// æŠ›å‡ºå¼‚å¸¸
     if (arcs[v1][v2] == 0) {
-        throw Error("´Ë±ß²»´æÔÚ!");
+        throw Error("æ­¤è¾¹ä¸å­˜åœ¨!");
     }
-    if (arcs[v1][v2] != 0) {    // Ô­ÎŞÏòÍ¼´æÔÚ±ß(v1, v2)
+    if (arcs[v1][v2] != 0) {    // åŸæ— å‘å›¾å­˜åœ¨è¾¹(v1, v2)
         arcNum--;
         arcs[v1][v2] = -1;
         //arcs[v2][v1] = 0;
@@ -367,39 +467,39 @@ void AdjMatrixUndirGraph<ElemType>::DeleteArc(int v1, int v2)
 
 template<class ElemType>
 Status AdjMatrixUndirGraph<ElemType>::GetTag(int v) const
-// ²Ù×÷½á¹û£º·µ»Ø¶¥µãvµÄ±êÖ¾		 
+// æ“ä½œç»“æœï¼šè¿”å›é¡¶ç‚¹vçš„æ ‡å¿—
 {
     if (v < 0 || v >= vexNum)
-        throw Error("v²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("vä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
 
     return tag[v];
 }
 
 template<class ElemType>
 void AdjMatrixUndirGraph<ElemType>::SetTag(int v, Status val) const
-// ²Ù×÷½á¹û£ºÉèÖÃ¶¥µãvµÄ±êÖ¾Îªval		 
+// æ“ä½œç»“æœï¼šè®¾ç½®é¡¶ç‚¹vçš„æ ‡å¿—ä¸ºval
 {
     if (v < 0 || v >= vexNum)
-        throw Error("v²»ºÏ·¨!");    // Å×³öÒì³£
+        throw Error("vä¸åˆæ³•!");    // æŠ›å‡ºå¼‚å¸¸
 
     tag[v] = val;
 }
 
 template<class ElemType>
 AdjMatrixUndirGraph<ElemType>::AdjMatrixUndirGraph(const AdjMatrixUndirGraph<ElemType> &g)
-// ²Ù×÷½á¹û£ºÓÉÎŞÏòÍ¼µÄÁÚ½Ó¾ØÕóg¹¹ÔìĞÂÎŞÏòÍ¼µÄÁÚ½Ó¾ØÕóg¡ª¡ª¸´ÖÆ¹¹Ôìº¯Êı
+// æ“ä½œç»“æœï¼šç”±æ— å‘å›¾çš„é‚»æ¥çŸ©é˜µgæ„é€ æ–°æ— å‘å›¾çš„é‚»æ¥çŸ©é˜µgâ€”â€”å¤åˆ¶æ„é€ å‡½æ•°
 {
     vexNum = g.vexNum;
     vexMaxNum = g.vexMaxNum;
     arcNum = g.arcNum;
 
-    vertexes = new ElemType[vexMaxNum];        // Éú³É¶¥µãÊı¾İÊı×é
-    tag = new Status[vexMaxNum];            // Éú³É±êÖ¾Êı×é
-    arcs = (int **) new int *[vexMaxNum];    // Éú³ÉÁÚ½Ó¾ØÕó
+    vertexes = new ElemType[vexMaxNum];        // ç”Ÿæˆé¡¶ç‚¹æ•°æ®æ•°ç»„
+    tag = new Status[vexMaxNum];            // ç”Ÿæˆæ ‡å¿—æ•°ç»„
+    arcs = (int **) new int *[vexMaxNum];    // ç”Ÿæˆé‚»æ¥çŸ©é˜µ
     for (int v = 0; v < vexMaxNum; v++)
         arcs[v] = new int[vexMaxNum];
 
-    for (int v = 0; v < vexNum; v++) {    // ¸´ÖÆ¶¥µãÊı¾İÊı×é
+    for (int v = 0; v < vexNum; v++) {    // å¤åˆ¶é¡¶ç‚¹æ•°æ®æ•°ç»„
         vertexes[v] = g.vertexes[v];
         tag[v] = g.tag[v];
         for (int u = 0; u < vexNum; u++)
@@ -409,26 +509,26 @@ AdjMatrixUndirGraph<ElemType>::AdjMatrixUndirGraph(const AdjMatrixUndirGraph<Ele
 
 template<class ElemType>
 AdjMatrixUndirGraph<ElemType> &AdjMatrixUndirGraph<ElemType>::operator=(const AdjMatrixUndirGraph<ElemType> &g)
-// ²Ù×÷½á¹û£º½«ÎŞÏòÍ¼µÄÁÚ½Ó¾ØÕóg¸³Öµ¸øµ±Ç°ÎŞÏòÍ¼µÄÁÚ½Ó¾ØÕó¡ª¡ª¸³ÖµÓï¾äÖØÔØ
+// æ“ä½œç»“æœï¼šå°†æ— å‘å›¾çš„é‚»æ¥çŸ©é˜µgèµ‹å€¼ç»™å½“å‰æ— å‘å›¾çš„é‚»æ¥çŸ©é˜µâ€”â€”èµ‹å€¼è¯­å¥é‡è½½
 {
     if (&g != this) {
-        delete[]vertexes;                // ÊÍ·Å¶¥µãÊı¾İ
-        delete[]tag;                          // ÊÍ·Å±êÖ¾
+        delete[]vertexes;                // é‡Šæ”¾é¡¶ç‚¹æ•°æ®
+        delete[]tag;                          // é‡Šæ”¾æ ‡å¿—
 
-        for (int v = 0; v < vexMaxNum; v++)    // ÊÍ·ÅÁÚ½Ó¾ØÕóµÄĞĞ
+        for (int v = 0; v < vexMaxNum; v++)    // é‡Šæ”¾é‚»æ¥çŸ©é˜µçš„è¡Œ
             delete[]arcs[v];
-        delete[]arcs;                      // ÊÍ·ÅÁÚ½Ó¾ØÕó
+        delete[]arcs;                      // é‡Šæ”¾é‚»æ¥çŸ©é˜µ
         vexNum = g.vexNum;
         vexMaxNum = g.vexMaxNum;
         arcNum = g.arcNum;
 
-        vertexes = new ElemType[vexMaxNum];     // Éú³É¶¥µãÊı¾İÊı×é
-        tag = new Status[vexMaxNum];               // Éú³É±êÖ¾Êı×é
-        arcs = (int **) new int *[vexMaxNum]; // Éú³ÉÁÚ½Ó¾ØÕó
+        vertexes = new ElemType[vexMaxNum];     // ç”Ÿæˆé¡¶ç‚¹æ•°æ®æ•°ç»„
+        tag = new Status[vexMaxNum];               // ç”Ÿæˆæ ‡å¿—æ•°ç»„
+        arcs = (int **) new int *[vexMaxNum]; // ç”Ÿæˆé‚»æ¥çŸ©é˜µ
         for (int v = 0; v < vexMaxNum; v++)
             arcs[v] = new int[vexMaxNum];
 
-        for (int v = 0; v < vexNum; v++) {     // ¸´ÖÆ¶¥µãÊı¾İÊı×é
+        for (int v = 0; v < vexNum; v++) {     // å¤åˆ¶é¡¶ç‚¹æ•°æ®æ•°ç»„
             vertexes[v] = g.vertexes[v];
             tag[v] = g.tag[v];
             for (int u = 0; u < vexNum; u++)
@@ -440,7 +540,7 @@ AdjMatrixUndirGraph<ElemType> &AdjMatrixUndirGraph<ElemType>::operator=(const Ad
 
 template<class ElemType>
 void AdjMatrixUndirGraph<ElemType>::Display()
-// ²Ù×÷½á¹û: ÏÔÊ¾ÁÚ½Ó¾ØÕóÎŞÏòÍ¼
+// æ“ä½œç»“æœ: æ˜¾ç¤ºé‚»æ¥çŸ©é˜µæ— å‘å›¾
 {
     cout << "  ";
     for (int v = 0; v < vexNum; v++)
