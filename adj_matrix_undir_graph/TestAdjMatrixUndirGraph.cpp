@@ -1,4 +1,3 @@
-#include "Assistance.h"                    // 辅助软件包
 #include "AdjMatrixUndirGraph.h"        // 邻接矩阵无向图
 
 int main(void) {
@@ -98,7 +97,7 @@ int main(void) {
                 case 'B':
                     cout << "输入两个节点的值:";
                     cin >> e1 >> e2;
-                    //v = g.ShortestPath_Floued(e1, e2);
+                    //v = g.ShortestPath_Floyd(e1, e2);
                     //v = g.ShortestPath_DJ(e1 , e2)
                     //v = g.ShortestPath_dfs_1(e1,e2,0);
                     v = g.ShortestPath_dfs(e1,e2);

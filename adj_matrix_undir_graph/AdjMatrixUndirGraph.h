@@ -1,16 +1,8 @@
 #ifndef __ADJ_MATRIX_UNDIR_GRAPH_H__
 #define __ADJ_MATRIX_UNDIR_GRAPH_H__
 
-#include <windows.h>
+#include "Assistance.h"                    // 辅助软件包
 
-void print(int n) {
-    if (n == -1) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN);
-    } else {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), abs(n));
-    }
-    return;
-}
 
 // 无向图的邻接矩阵类
 template<class ElemType>
@@ -58,7 +50,7 @@ public:
 
     int CountInDegree(ElemType &e);
 
-    int ShortestPath_Floued(ElemType &e1, ElemType &e2);
+    int ShortestPath_Floyd(ElemType &e1, ElemType &e2);
 
     int ShortestPath_DJ(ElemType &e1, ElemType &e2);
 
@@ -104,7 +96,7 @@ int AdjMatrixUndirGraph<ElemType>::CountInDegree(ElemType &e) {
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floued(ElemType &e1, ElemType &e2) {
+int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floyd(ElemType &e1, ElemType &e2) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;
