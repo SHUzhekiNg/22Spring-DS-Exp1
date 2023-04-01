@@ -13,14 +13,14 @@ int main(void) {
                 {1, 0, 1, 0, 0},
         };
         char c = '0', e, e1, e2;
-        int n = 5, v, v1, v2;
+        int n = 5, v, v1, v2, lim;
 
         AdjMatrixUndirGraph<char> g(vexs, n, 7);
 
         for (int u = 0; u < n; u++)
             for (int v = 0; v < n; v++)
                 if (m[u][v] == 1) g.InsertArc(u, v, u + v);
-        while (c != 'C') {
+        while (c != 'D') {
             cout << endl << "1. 图清空.";
             cout << endl << "2. 显示图.";
             cout << endl << "3. 取指定顶点的值.";
@@ -32,8 +32,9 @@ int main(void) {
             cout << endl << "9. 查询顶点出度数";
             cout << endl << "A. 查询顶点入度数";
             cout << endl << "B. 查询两顶点的最小路径值";
-            cout << endl << "C. 退出";
-            cout << endl << "选择功能(1~C):";
+            cout << endl << "C. 查询两节点的最短路径";
+            cout << endl << "D. 退出";
+            cout << endl << "选择功能(1~D):";
             cin >> c;
             switch (c) {
                 case '1':
@@ -97,9 +98,19 @@ int main(void) {
                 case 'B':
                     cout << "输入两个节点的值:";
                     cin >> e1 >> e2;
-                    v = g.ShortestPath_Floued(e1,e2);
-                    //v = g.ShortestPath_DJ(e1 , e2);
+                    //v = g.ShortestPath_Floued(e1, e2);
+                    //v = g.ShortestPath_DJ(e1 , e2)
+                    //v = g.ShortestPath_dfs_1(e1,e2,0);
+                    v = g.ShortestPath_dfs(e1,e2);
                     cout << "最短路径值：" << v << endl;
+                    break;
+                case 'C':
+                    cout << "输入两节点的值:";
+                    cin >> e1 >> e2;
+                    cout << "输入限制值:";
+                    cin >> lim;
+                    v = g.limitedPath_dfs(e1, e2, lim);
+                    cout << "次短路径值:" << v << endl;
                     break;
             }
         }
