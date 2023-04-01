@@ -28,7 +28,7 @@ enum Status {
 
 // 宏定义
 #define DEFAULT_SIZE 1000            // 缺省元素个数
-#define DEFAULT_INFINITY 1000000    // 缺省无穷大
+constexpr int DEFAULT_INFINITY = 0xffffffff;   // 缺省无穷大
 
 
 // 辅助函数声明
