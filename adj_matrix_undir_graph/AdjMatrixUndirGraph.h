@@ -64,9 +64,8 @@ public:
 
     int ShortestPath_dfs(ElemType &e1, ElemType &e2);
 
-    int ShortestPath_dfs_1(ElemType &e1, ElemType &e2, int flag = 0);
-
-    int limitedPath_dfs(ElemType &e1, ElemType &e2, int limits);
+    int SECOND_ShortestPath_dfs_1(ElemType &e1, ElemType &e2);      //求次短路
+    int limitedPath_ford(ElemType &e1, ElemType &e2, int limits);   //求在边数限制下的最短路
 
 };
 
@@ -242,7 +241,7 @@ int AdjMatrixUndirGraph<ElemType>::ShortestPath_dfs(ElemType &e1, ElemType &e2) 
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::ShortestPath_dfs_1(ElemType &e1, ElemType &e2, int flag) {
+int AdjMatrixUndirGraph<ElemType>::SECOND_ShortestPath_dfs_1(ElemType &e1, ElemType &e2) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;
@@ -257,7 +256,7 @@ int AdjMatrixUndirGraph<ElemType>::ShortestPath_dfs_1(ElemType &e1, ElemType &e2
         else SetTag(v1, VISITED);
     }
 
-    return dfs_1(v1, v2, flag);
+    return dfs_1(v1, v2, 0);
 }
 
 template<class ElemType>
@@ -305,13 +304,13 @@ int AdjMatrixUndirGraph<ElemType>::dfs_1(int v1, int v2, int flag) {
     if (flag == 0 && secondpathlen == DEFAULT_INFINITY)
         cout << "无次短路!" << endl;
     else if (flag == 0 && secondpathlen != DEFAULT_INFINITY)
-        cout << "次短路：" << secondpathlen << endl;
+        cout << "次短路:" << secondpathlen << endl;
 
     return pathlen;
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::limitedPath_dfs(ElemType &e1, ElemType &e2, int limits) {
+int AdjMatrixUndirGraph<ElemType>::limitedPath_ford(ElemType &e1, ElemType &e2, int limits) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;

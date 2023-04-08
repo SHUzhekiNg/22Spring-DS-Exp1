@@ -20,7 +20,7 @@ int main(void) {
         for (int u = 0; u < n; u++)
             for (int v = 0; v < n; v++)
                 if (m[u][v] == 1) g.InsertArc(u, v, u + v);
-        while (c != 'D') {
+        while (c != 'E') {
             cout << endl << "1. 图清空.";
             cout << endl << "2. 显示图.";
             cout << endl << "3. 取指定顶点的值.";
@@ -32,9 +32,10 @@ int main(void) {
             cout << endl << "9. 查询顶点出度数";
             cout << endl << "A. 查询顶点入度数";
             cout << endl << "B. 查询两顶点的最小路径值";
-            cout << endl << "C. 查询两节点的最短路径";
-            cout << endl << "D. 退出";
-            cout << endl << "选择功能(1~D):";
+            cout << endl << "C. 在边数限制的情况下，查询两节点的最短路径";
+            cout << endl << "D. 查询两节点的次短路和最短路径";
+            cout << endl << "E. 退出";
+            cout << endl << "选择功能(1~E):";
             cin >> c;
             switch (c) {
                 case '1':
@@ -100,17 +101,22 @@ int main(void) {
                     cin >> e1 >> e2;
                     //v = g.ShortestPath_Floued(e1, e2);
                     v = g.ShortestPath_DJ(e1 , e2);
-                    //v = g.ShortestPath_dfs_1(e1,e2,0);
                     //v = g.ShortestPath_dfs(e1,e2);
                     cout << "最短路径值：" << v << endl;
                     break;
                 case 'C':
                     cout << "输入两节点的值:";
                     cin >> e1 >> e2;
-                    cout << "输入限制值:";
+                    cout << "输入边数最大值:";
                     cin >> lim;
-                    v = g.limitedPath_dfs(e1, e2, lim);
-                    cout << "次短路径值:" << v << endl;
+                    v = g.limitedPath_ford(e1, e2, lim);
+                    cout << "最短路:" << v << endl;
+                    break;
+                case 'D':
+                    cout << "输入两节点的值:";
+                    cin >> e1 >> e2;
+                    v = g.SECOND_ShortestPath_dfs_1(e1, e2);
+                    cout << "最短路:" << v << endl;
                     break;
             }
         }
