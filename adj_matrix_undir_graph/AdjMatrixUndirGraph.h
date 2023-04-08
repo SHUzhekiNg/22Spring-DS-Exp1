@@ -1,53 +1,78 @@
 #ifndef __ADJ_MATRIX_UNDIR_GRAPH_H__
 #define __ADJ_MATRIX_UNDIR_GRAPH_H__
 
-#include "Assistance.h"
+#include <windows.h>
 
+void print(int n) {
+    if (n == -1) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN);
+    } else {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), abs(n));
+    }
+    return;
+}
+
+// 无向图的邻接矩阵类
 template<class ElemType>
 class AdjMatrixUndirGraph {
+protected:
+// 邻接矩阵的数据成员:
+    int vexNum, vexMaxNum, arcNum;            // 顶点数目、允许的顶点最大数目和边数
+    int **arcs;                                // 存放边信息邻接矩阵
+    ElemType *vertexes;                        // 存放顶点信息的数组
+    mutable Status *tag;                    // 标志数组
+    int dfs(int v1, int v2);
+
+    int dfs_1(int v1, int v2, int flag = 0);
+
 public:
+// 邻接矩阵类型的方法声明:
     AdjMatrixUndirGraph(ElemType es[], int vertexNum, int vertexMaxNum = DEFAULT_SIZE);
+
+    // 以数组es[]为顶点,顶点个数为vertexNum,允许的顶点最大数目为vertexMaxNum,边数为0的无向图
     AdjMatrixUndirGraph(int vertexMaxNum = DEFAULT_SIZE);
-    ~AdjMatrixUndirGraph();
-    AdjMatrixUndirGraph(const AdjMatrixUndirGraph<ElemType> &g);
+
+    // 构造允许的顶点最大数目为vertexMaxNum,边数为0的无向图
+    ~AdjMatrixUndirGraph();                    // 析构函数
+    void Clear();                          // 清空图
+    bool IsEmpty();                 // 判断无向图是否为空
+    int GetOrder(ElemType &d) const;// 求顶点的序号
+    Status GetElem(int v, ElemType &d) const;// 求顶点的元素值
+    Status SetElem(int v, const ElemType &d);// 设置顶点的元素值
+    int GetVexNum() const;                    // 返回顶点个数
+    int GetArcNum() const;                    // 返回边数
+    int FirstAdjVex(int v) const;        // 返回顶点v的第一个邻接点
+    int NextAdjVex(int v1, int v2) const;         // 返回顶点v1的相对于v2的下一个邻接点
+    void InsertVex(const ElemType &d);             // 插入元素值为d的顶点
+    void InsertArc(int v1, int v2, int W);                 // 插入顶点为v1和v2的边
+    void DeleteVex(const ElemType &d);             // 删除元素值为d的顶点
+    void DeleteArc(int v1, int v2);                 // 删除顶点为v1和v2的边
+    Status GetTag(int v) const;                     // 返回顶点v的标志
+    void SetTag(int v, Status val) const;       // 设置顶点v的标志为val
+    AdjMatrixUndirGraph(const AdjMatrixUndirGraph<ElemType> &g);    // 复制构造函数
     AdjMatrixUndirGraph<ElemType> &operator=(const AdjMatrixUndirGraph<ElemType> &g);
 
-    void Clear();
-    bool IsEmpty();
-    int GetOrder(ElemType &d) const;
-    Status GetElem(int v, ElemType &d) const;
-    Status SetElem(int v, const ElemType &d);
-    int GetVexNum() const;
-    int GetArcNum() const;
-    int FirstAdjVex(int v) const;
-    int NextAdjVex(int v1, int v2) const;
-    void InsertVex(const ElemType &d);
-    void InsertArc(int v1, int v2, int W);
-    void DeleteVex(const ElemType &d);
-    void DeleteArc(int v1, int v2);
-    Status GetTag(int v) const;
-    void SetTag(int v, Status val) const;
-    void Display();
+    // 赋值语句重载
+    void Display();                             // 显示邻接矩阵无向图
+    int CountOutDegree(ElemType &e);
 
-    int CountOutDegree(ElemType e);
-    int CountInDegree(ElemType e);
-    int ShortestPath_Floyd(ElemType e1, ElemType e2);
-    int ShortestPath_DJ(ElemType e1, ElemType e2);
-    int ShortestPath_DFS(ElemType e1, ElemType e2);
-    int ShortestPath_DFS_1(ElemType e1, ElemType e2, int flag = 0);
-    int LimitedPath_DFS(ElemType &e1, ElemType &e2, int limits);
+    int CountInDegree(ElemType &e);
 
-private:
-    int vexNum, vexMaxNum, arcNum;
-    int **arcs;
-    ElemType *vertexes;
-    mutable Status *tag;
-    int DFSImpl(int v1, int v2);
-    int DFSImpl_1(int v1, int v2, int flag = 0);
+    int ShortestPath_Floued(ElemType &e1, ElemType &e2);
+
+    int ShortestPath_DJ(ElemType &e1, ElemType &e2);
+
+    int ShortestPath_dfs(ElemType &e1, ElemType &e2);
+
+    int ShortestPath_dfs_1(ElemType &e1, ElemType &e2, int flag = 0);
+
+    int limitedPath_dfs(ElemType &e1, ElemType &e2, int limits);
+
 };
 
+// 无向图的邻接矩阵类的实现部分
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::CountOutDegree(ElemType e) {
+int AdjMatrixUndirGraph<ElemType>::CountOutDegree(ElemType &e) {
     int v1 = 0;
     for (; v1 < vexNum; v1++) {
         if (vertexes[v1] == e) break;
@@ -55,7 +80,6 @@ int AdjMatrixUndirGraph<ElemType>::CountOutDegree(ElemType e) {
     if (v1 == vexNum) {
         throw Error("查询节点不存在!");
     }
-    // assert(v1 != vexNum);
     int s = 0;
     for (int i = 0; i < vexNum; ++i) {
         if (arcs[v1][i] != -1) s++;
@@ -64,7 +88,7 @@ int AdjMatrixUndirGraph<ElemType>::CountOutDegree(ElemType e) {
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::CountInDegree(ElemType e) {
+int AdjMatrixUndirGraph<ElemType>::CountInDegree(ElemType &e) {
     int v1 = 0;
     for (; v1 < vexNum; v1++) {
         if (vertexes[v1] == e) break;
@@ -80,16 +104,14 @@ int AdjMatrixUndirGraph<ElemType>::CountInDegree(ElemType e) {
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floyd(ElemType e1, ElemType e2) {
+int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floued(ElemType &e1, ElemType &e2) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;
         if (vertexes[i] == e2) v2 = i;
     }
-    if (v1 == vexNum || v2 == vexNum) {
+    if (v1 == -1 || v2 == -1) {
         throw Error("输入的顶点不全存在！");
-    } else if (v1 == v2) {
-        return 0;
     }
     int sp[vexNum][vexNum];
     for (int i = 0; i < vexNum; ++i) {
@@ -99,7 +121,7 @@ int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floyd(ElemType e1, ElemType e2) 
     }
     for (int mid = 0; mid < vexNum; ++mid) {
         for (int start = 0; start < vexNum; ++start) {
-            for (int end = 0; end < vexNum; ++end) {
+            for (int end = 0; end < vexNum; end++) {
                 if (sp[start][end] > sp[start][mid] + sp[mid][end]) {
                     sp[start][end] = sp[start][mid] + sp[mid][end];
                 }
@@ -107,19 +129,30 @@ int AdjMatrixUndirGraph<ElemType>::ShortestPath_Floyd(ElemType e1, ElemType e2) 
         }
     }
     return sp[v1][v2];
+    /*
+    int pathlen = arcs[v1][v2] == -1 ? DEFAULT_INFINITY : arcs[v1][v2];
+    for (int mid = 0; mid < vexNum; mid++) {
+        if (mid == v1 || mid == v2) {
+            int d = arcs[v1][v2] == -1 ? DEFAULT_INFINITY : arcs[v1][v2];
+            pathlen = pathlen < d ? pathlen : d;
+        } else {
+            int front = arcs[v1][mid] == -1 ? DEFAULT_INFINITY : arcs[v1][mid];
+            int rear = arcs[mid][v2] == -1 ? DEFAULT_INFINITY : arcs[mid][v2];
+            pathlen = pathlen < (front + rear) ? pathlen : (front + rear);
+        }
+    }
+    return pathlen;*/
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::ShortestPath_DJ(ElemType e1, ElemType e2) {
+int AdjMatrixUndirGraph<ElemType>::ShortestPath_DJ(ElemType &e1, ElemType &e2) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;
         if (vertexes[i] == e2) v2 = i;
     }
-    if (v1 == vexNum || v2 == vexNum) {
+    if (v1 == -1 || v2 == -1) {
         throw Error("输入的顶点不全存在！");
-    } else if (v1 == v2) {
-        return 0;
     }
     int dis[vexNum];
     int visited[vexNum];
@@ -130,64 +163,105 @@ int AdjMatrixUndirGraph<ElemType>::ShortestPath_DJ(ElemType e1, ElemType e2) {
         visited[i] = 0;
     }
     for (int visited_num = 0; visited_num < vexNum; visited_num++) {
-        int min_dis = DEFAULT_INFINITY;
+        int mindis = DEFAULT_INFINITY;
         for (int i = 0; i < vexNum; ++i) {
-            if (visited[i] == 0 && min_dis > dis[i]) {
-                to_visit = i;
-                min_dis = dis[i];
+            if (visited[i] == 0) {
+                to_visit = mindis < dis[i] ? to_visit : i;
+                mindis = mindis < dis[i] ? mindis : dis[i];
             }
         }
         for (int i = 0; i < vexNum; ++i) {
-            if (arcs[to_visit][i] != -1 && visited[i] == 0 && (dis[to_visit] + arcs[to_visit][i]) < dis[i]) {
-                dis[i] = dis[to_visit] + arcs[to_visit][i];
+            if (arcs[to_visit][i] != -1 && visited[i] == 0) {
+                dis[i] = (dis[to_visit] + arcs[to_visit][i]) < dis[i] ? (dis[to_visit] + arcs[to_visit][i]) : dis[i];
             }
         }
         visited[to_visit] = 1;
     }
     return dis[v2];
+    /*
+    int dis[vexNum];
+    int white_point[vexNum];
+    int new_white_point_i, white_point_num = 1;
+    for (int i = 0; i < vexNum; ++i) {
+        if (i == v1) {
+            dis[i] = 0;
+            white_point[i] = 1;
+            new_white_point_i = i;
+        } else {
+            dis[i] = DEFAULT_INFINITY;
+            white_point[i] = 0;
+        }
+    }
+    while (true) {
+        for (int i = 0; i < vexNum; ++i) {
+            if (arcs[new_white_point_i][i] == -1) {
+                continue;
+            } else if (white_point[i] == 0) {
+                int d = dis[new_white_point_i] + arcs[new_white_point_i][i];
+                dis[i] = dis[i] < d ? dis[i] : d;
+            }
+        }
+        int min_white_point_data = DEFAULT_INFINITY;
+        for (int i = 0; i < vexNum; ++i) {
+            if (white_point[i] == 1) {
+                continue;
+            } else {
+                new_white_point_i = dis[i] < min_white_point_data ? i : new_white_point_i;
+                min_white_point_data = dis[i] < min_white_point_data ? dis[i] : min_white_point_data;
+            }
+        }
+        white_point[new_white_point_i] = 1;
+        white_point_num++;
+        if (white_point_num == vexNum - 1) {
+            break;
+        }
+    }
+    /*for (int i = 0; i < vexNum; ++i) {
+        cout << dis[i] << " ";
+    }
+    cout << endl;
+    return dis[v2];*/
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::ShortestPath_DFS(ElemType e1, ElemType e2) {
+int AdjMatrixUndirGraph<ElemType>::ShortestPath_dfs(ElemType &e1, ElemType &e2) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;
         if (vertexes[i] == e2) v2 = i;
     }
-    if (v1 == vexNum || v2 == vexNum) {
+    if (v1 == -1 || v2 == -1) {
         throw Error("输入的顶点不全存在！");
-    } else if (v1 == v2) {
-        return 0;
     }
+
     for (int i = 0; i < GetVexNum(); i++) {
         if (i != v1) SetTag(v1, UNVISITED);
         else SetTag(v1, VISITED);
     }
-    return DFSImpl(v1, v2);
+    return dfs(v1, v2);
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::ShortestPath_DFS_1(ElemType e1, ElemType e2, int flag) {
+int AdjMatrixUndirGraph<ElemType>::ShortestPath_dfs_1(ElemType &e1, ElemType &e2, int flag) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;
         if (vertexes[i] == e2) v2 = i;
     }
-    if (v1 == vexNum || v2 == vexNum) {
+    if (v1 == -1 || v2 == -1) {
         throw Error("输入的顶点不全存在！");
-    } else if (v1 == v2) {
-        return 0;
     }
+
     for (int i = 0; i < GetVexNum(); i++) {
         if (i != v1) SetTag(v1, UNVISITED);
         else SetTag(v1, VISITED);
     }
 
-    return DFSImpl_1(v1, v2, flag);
+    return dfs_1(v1, v2, flag);
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::DFSImpl(int v1, int v2) {
+int AdjMatrixUndirGraph<ElemType>::dfs(int v1, int v2) {
     int pathlen = DEFAULT_INFINITY;
     if (v1 == v2) return 0;
 
@@ -196,7 +270,7 @@ int AdjMatrixUndirGraph<ElemType>::DFSImpl(int v1, int v2) {
 
         if (GetTag(i) == UNVISITED && arcs[v1][i] != -1) {
             SetTag(i, VISITED);
-            k = arcs[v1][i] + DFSImpl(i, v2);
+            k = arcs[v1][i] + dfs(i, v2);
             SetTag(i, UNVISITED);
         }
         pathlen = min(pathlen, k);
@@ -208,7 +282,7 @@ int AdjMatrixUndirGraph<ElemType>::DFSImpl(int v1, int v2) {
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::DFSImpl_1(int v1, int v2, int flag) {
+int AdjMatrixUndirGraph<ElemType>::dfs_1(int v1, int v2, int flag) {
     int pathlen = DEFAULT_INFINITY;
     int secondpathlen = DEFAULT_INFINITY;
     if (v1 == v2) return 0;
@@ -218,7 +292,7 @@ int AdjMatrixUndirGraph<ElemType>::DFSImpl_1(int v1, int v2, int flag) {
 
         if (GetTag(i) == UNVISITED && arcs[v1][i] != -1) {
             SetTag(i, VISITED);
-            k = arcs[v1][i] + DFSImpl_1(i, v2, 1);
+            k = arcs[v1][i] + dfs_1(i, v2, 1);
             SetTag(i, UNVISITED);
         }
         pathlen = min(pathlen, k);
@@ -237,17 +311,15 @@ int AdjMatrixUndirGraph<ElemType>::DFSImpl_1(int v1, int v2, int flag) {
 }
 
 template<class ElemType>
-int AdjMatrixUndirGraph<ElemType>::LimitedPath_DFS(ElemType &e1, ElemType &e2, int limits) {
+int AdjMatrixUndirGraph<ElemType>::limitedPath_dfs(ElemType &e1, ElemType &e2, int limits) {
     int v1 = -1, v2 = -1;
     for (int i = 0; i < vexNum; ++i) {
         if (vertexes[i] == e1) v1 = i;
         if (vertexes[i] == e2) v2 = i;
     }
 
-    if (v1 == vexNum || v2 == vexNum) {
+    if (v1 == -1 || v2 == -1) {
         throw Error("输入的顶点不全存在！");
-    } else if (v1 == v2) {
-        return 0;
     }
     struct Edge {
         int a, b, c;
@@ -270,7 +342,7 @@ int AdjMatrixUndirGraph<ElemType>::LimitedPath_DFS(ElemType &e1, ElemType &e2, i
     for (int i = 0; i < limits; i++) {
         memcpy(last, dist, sizeof dist);
         for (int j = 0; j < arcNum; j++) {
-            Edge e = edges[j];
+            auto e = edges[j];
             dist[e.b] = min(dist[e.b], last[e.a] + e.c);
         }
     }

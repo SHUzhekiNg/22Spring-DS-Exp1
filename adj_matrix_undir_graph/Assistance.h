@@ -16,7 +16,6 @@
 #include <iomanip>                    // 输入输出流格式设置
 #include <cstdarg>                    // 支持变长函数参数
 #include <cassert>                    // 支持断言
-#include <windows.h>
 
 using namespace std;                // 标准库包含在命名空间std中
 
@@ -28,7 +27,7 @@ enum Status {
 
 // 宏定义
 #define DEFAULT_SIZE 1000            // 缺省元素个数
-constexpr int DEFAULT_INFINITY = 0xffffffff;   // 缺省无穷大
+#define DEFAULT_INFINITY 0x3f3f3f   // 缺省无穷大
 
 
 // 辅助函数声明
@@ -60,14 +59,6 @@ char GetChar(istream &inStream)
     return ch;                                // 返回字符
 }
 
-void print(int n) {
-    if (n == -1) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_GREEN);
-    } else {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), abs(n));
-    }
-    return;
-}
 
 // 通用异常类                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 #define MAX_ERROR_MESSAGE_LEN 100
